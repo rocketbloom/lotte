@@ -20,6 +20,12 @@ defmodule LotteWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/health", LotteWeb do
+    pipe_through :api
+
+    get "/", HealthController, :check
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", LotteWeb do
   #   pipe_through :api
