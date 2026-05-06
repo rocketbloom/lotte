@@ -37,4 +37,3 @@ primary_region = 'ams'
   cpus = 1
 
 [deploy]
-  release_command = "/app/bin/migrate"
