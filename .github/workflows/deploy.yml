@@ -1,8 +1,7 @@
 name: Deploy to Fly
 
 on:
-  push:
-    branches: [ trunk ]
+  workflow_dispatch: # Manual trigger only until Fly issues are resolved
 
 env:
   REGISTRY: ghcr.io
