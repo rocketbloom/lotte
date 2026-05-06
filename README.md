@@ -16,3 +16,8 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * Docs: https://hexdocs.pm/phoenix
 * Forum: https://elixirforum.com/c/phoenix-forum
 * Source: https://github.com/phoenixframework/phoenix
+
+## Deployment
+
+- **Trunk deployments**: Every push to `trunk` automatically deploys to https://lotte-test.fly.dev
+- **Production deployments**: Manual deployment to https://lotte.fly.dev
