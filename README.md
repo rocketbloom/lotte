@@ -21,3 +21,4 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 - **Trunk deployments**: Every push to `trunk` automatically deploys to https://lotte-test.fly.dev
 - **Production deployments**: Manual deployment to https://lotte.fly.dev
+# Test deployment
