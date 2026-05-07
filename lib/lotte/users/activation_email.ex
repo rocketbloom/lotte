@@ -5,15 +5,20 @@ defmodule Lotte.Users.ActivationEmail do
   """
   import Swoosh.Email
 
-  @from {"Lotte", "noreply@lotte-test.fly.dev"}
-
   def build(email, activation_url) when is_binary(email) and is_binary(activation_url) do
     new()
-    |> from(@from)
+    |> from(from_tuple())
     |> to(email)
     |> subject("Activate your Lotte account")
     |> text_body(text_body(activation_url))
     |> html_body(html_body(activation_url))
+  end
+
+  defp from_tuple do
+    cfg = Application.get_env(:lotte, :mail_from, [])
+    name = Keyword.get(cfg, :name, "Lotte")
+    address = Keyword.get(cfg, :address, "onboarding@resend.dev")
+    {name, address}
   end
 
   defp text_body(url) do

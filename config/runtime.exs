@@ -67,6 +67,19 @@ if config_env() == :prod do
 
   config :anthropic, api_key: anthropic_api_key
 
+  # Resend mail provider — falls back to Swoosh's local mailbox if no key.
+  if resend_api_key = System.get_env("RESEND_API_KEY") do
+    config :lotte, Lotte.Mailer,
+      adapter: Swoosh.Adapters.Resend,
+      api_key: resend_api_key
+  end
+
+  config :swoosh, api_client: Swoosh.ApiClient.Req
+
+  config :lotte, :mail_from,
+    address: System.get_env("MAIL_FROM_ADDRESS", "onboarding@resend.dev"),
+    name: System.get_env("MAIL_FROM_NAME", "Lotte")
+
   config :lotte, LotteWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
