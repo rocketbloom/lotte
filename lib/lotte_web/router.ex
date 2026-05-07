@@ -8,16 +8,37 @@ defmodule LotteWeb.Router do
     plug :put_root_layout, html: {LotteWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug LotteWeb.Auth, :fetch_current_user
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  pipeline :require_user do
+    plug LotteWeb.Auth, :require_user
+  end
+
   scope "/", LotteWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    get "/signup", AuthController, :signup_form
+    post "/signup", AuthController, :signup_submit
+
+    get "/activate/:token", AuthController, :activation_form
+    post "/activate/:token", AuthController, :activation_submit
+
+    get "/login", AuthController, :login_form
+    post "/login", AuthController, :login_submit
+    delete "/logout", AuthController, :logout
+  end
+
+  scope "/", LotteWeb do
+    pipe_through [:browser, :require_user]
+
+    get "/dashboard", DashboardController, :index
   end
 
   scope "/health", LotteWeb do

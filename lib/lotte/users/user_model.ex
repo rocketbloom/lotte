@@ -17,8 +17,10 @@ defmodule Lotte.Users.UserModel do
     belongs_to :tenant, Lotte.Tenants.TenantModel, type: :binary_id
 
     has_one :email_identity, Lotte.Users.EmailIdentityModel, foreign_key: :user_id
+
     has_one :email_password_identity, Lotte.Users.EmailPasswordIdentityModel,
       foreign_key: :user_id
+
     has_one :activation_token, Lotte.Users.ActivationTokenModel, foreign_key: :user_id
 
     timestamps()

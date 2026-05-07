@@ -10,13 +10,15 @@ defmodule Lotte.Users do
   import Ecto.Query
 
   alias Ecto.Multi
+  alias Lotte.Mailer
   alias Lotte.Repo
 
   alias Lotte.Users.{
-    UserModel,
+    ActivationEmail,
+    ActivationTokenModel,
     EmailIdentityModel,
     EmailPasswordIdentityModel,
-    ActivationTokenModel
+    UserModel
   }
 
   @doc """
@@ -130,6 +132,18 @@ defmodule Lotte.Users do
   end
 
   def activated?(%UserModel{} = user), do: not is_nil(user.confirmed_at)
+
+  @doc """
+  Sends the activation email. Caller supplies the URL builder
+  (e.g. `&LotteWeb.Router.Helpers.activation_url(conn, :show, &1)`)
+  so the context stays free of web concerns.
+  """
+  def deliver_activation_email(%UserModel{email: email}, token, url_for_token)
+      when is_binary(token) and is_function(url_for_token, 1) do
+    email
+    |> ActivationEmail.build(url_for_token.(token))
+    |> Mailer.deliver()
+  end
 
   defp get_password_identity(%UserModel{id: user_id}) do
     Repo.get_by(EmailPasswordIdentityModel, user_id: user_id)

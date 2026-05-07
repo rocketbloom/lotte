@@ -144,12 +144,16 @@ defmodule Lotte.UsersTest do
     end
 
     test "returns the user with correct password", %{user: user} do
-      assert %UserModel{id: id} = Users.authenticate_with_password("auth@example.com", "supersecret")
+      assert %UserModel{id: id} =
+               Users.authenticate_with_password("auth@example.com", "supersecret")
+
       assert id == user.id
     end
 
     test "is case-insensitive on email", %{user: user} do
-      assert %UserModel{id: id} = Users.authenticate_with_password("Auth@Example.COM", "supersecret")
+      assert %UserModel{id: id} =
+               Users.authenticate_with_password("Auth@Example.COM", "supersecret")
+
       assert id == user.id
     end
 
