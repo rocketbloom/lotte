@@ -19,8 +19,6 @@ Repo.query!("DELETE FROM tenant WHERE slug IN ('demo', 'test-practice')")
 # Create demo tenant
 Tenants.create_tenant!(%{
   name: "Demo Practice",
-  slug: "demo",
-  subdomain: "demo",
   status: "active",
   settings: %{
     "timezone" => "Europe/Amsterdam",
@@ -31,8 +29,6 @@ Tenants.create_tenant!(%{
 # Create test tenant
 Tenants.create_tenant!(%{
   name: "Test Healthcare Practice",
-  slug: "test-practice",
-  subdomain: "test",
   status: "active",
   settings: %{
     "timezone" => "Europe/Amsterdam",

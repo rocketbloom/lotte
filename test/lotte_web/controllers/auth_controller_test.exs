@@ -11,9 +11,9 @@ defmodule LotteWeb.AuthControllerTest do
   end
 
   describe "POST /signup" do
-    test "creates user, logs in, redirects to dashboard", %{conn: conn} do
+    test "creates user, logs in, redirects to onboarding", %{conn: conn} do
       conn = post(conn, ~p"/signup", %{"email" => "newuser@example.com"})
-      assert redirected_to(conn) == ~p"/dashboard"
+      assert redirected_to(conn) == ~p"/onboarding/company"
       assert get_session(conn, "user_id")
       assert Users.get_user_by_email("newuser@example.com")
     end
@@ -128,10 +128,20 @@ defmodule LotteWeb.AuthControllerTest do
       assert redirected_to(conn) == ~p"/login"
     end
 
-    test "renders when signed in", %{conn: conn} do
-      {:ok, %{user: user}} = Users.register_with_email("dash@example.com")
+    test "redirects to onboarding when user has no tenant", %{conn: conn} do
+      {:ok, %{user: user}} = Users.register_with_email("notenant@example.com")
       conn = conn |> Plug.Test.init_test_session(%{"user_id" => user.id}) |> get(~p"/dashboard")
-      assert html_response(conn, 200) =~ "dash@example.com"
+      assert redirected_to(conn) == ~p"/onboarding/company"
+    end
+
+    test "renders when user has a tenant", %{conn: conn} do
+      {:ok, %{user: user}} = Users.register_with_email("dash@example.com")
+      {:ok, %{user: user}} = Lotte.Tenants.register_owner(user, %{name: "Dash Co"})
+
+      conn = conn |> Plug.Test.init_test_session(%{"user_id" => user.id}) |> get(~p"/dashboard")
+      response = html_response(conn, 200)
+      assert response =~ "dash@example.com"
+      assert response =~ "Dash Co"
     end
   end
 end

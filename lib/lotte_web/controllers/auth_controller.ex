@@ -15,7 +15,7 @@ defmodule LotteWeb.AuthController do
 
         conn
         |> Auth.log_in(user, :browser)
-        |> redirect(to: ~p"/dashboard")
+        |> redirect(to: ~p"/onboarding/company")
 
       {:error, changeset} ->
         message = changeset_first_error(changeset, :email) || "We couldn't sign you up."

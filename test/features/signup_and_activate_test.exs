@@ -11,8 +11,12 @@ defmodule LotteWeb.Features.SignupAndActivateTest do
     |> visit("/signup")
     |> fill_in(Query.css("[data-testid='signup-email-input']"), with: email)
     |> click(Query.button("Continue"))
+    |> assert_has(Query.css("[data-testid='onboarding-company-name']"))
+    |> fill_in(Query.css("[data-testid='onboarding-company-name']"), with: "Demo Practice")
+    |> click(Query.button("Continue"))
     |> assert_has(Query.css("[data-testid='dashboard-status']"))
     |> assert_has(Query.css("[data-testid='dashboard-user-email']", text: email))
+    |> assert_has(Query.css("[data-testid='dashboard-tenant-name']", text: "Demo Practice"))
 
     user = Users.get_user_by_email(email)
     refute Users.activated?(user)
