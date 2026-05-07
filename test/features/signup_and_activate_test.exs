@@ -14,6 +14,8 @@ defmodule LotteWeb.Features.SignupAndActivateTest do
     |> assert_has(Query.css("[data-testid='onboarding-company-name']"))
     |> fill_in(Query.css("[data-testid='onboarding-company-name']"), with: "Demo Practice")
     |> click(Query.button("Continue"))
+    |> assert_has(Query.css("[data-testid='onboarding-skip']"))
+    |> click(Query.css("[data-testid='onboarding-skip']"))
     |> assert_has(Query.css("[data-testid='dashboard-status']"))
     |> assert_has(Query.css("[data-testid='dashboard-user-email']", text: email))
     |> assert_has(Query.css("[data-testid='dashboard-tenant-name']", text: "Demo Practice"))

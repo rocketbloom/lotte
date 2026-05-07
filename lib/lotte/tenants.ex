@@ -51,4 +51,16 @@ defmodule Lotte.Tenants do
     |> TenantModel.changeset(attrs)
     |> Repo.update()
   end
+
+  def update_about(tenant, attrs) do
+    tenant
+    |> TenantModel.about_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_operate(tenant, attrs) do
+    tenant
+    |> TenantModel.operate_changeset(attrs)
+    |> Repo.update()
+  end
 end

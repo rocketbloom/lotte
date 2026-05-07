@@ -11,6 +11,7 @@ defmodule Lotte.Tenants.TenantModel do
     field :slug, :string
     field :status, :string, default: "active"
     field :settings, :map, default: %{}
+    embeds_one :company_profile, Lotte.Tenants.CompanyProfileModel, on_replace: :update
 
     has_many :users, Lotte.Users.UserModel, foreign_key: :tenant_id
     has_many :conversations, Lotte.Conversations.ConversationModel, foreign_key: :tenant_id
@@ -28,6 +29,32 @@ defmodule Lotte.Tenants.TenantModel do
     |> unique_constraint(:slug)
     |> validate_inclusion(:status, ["active", "inactive", "suspended"])
   end
+
+  def about_changeset(tenant, attrs) do
+    tenant = ensure_profile(tenant)
+
+    tenant
+    |> cast(%{"company_profile" => attrs}, [])
+    |> cast_embed(:company_profile,
+      with: &Lotte.Tenants.CompanyProfileModel.about_changeset/2
+    )
+  end
+
+  def operate_changeset(tenant, attrs) do
+    tenant = ensure_profile(tenant)
+
+    tenant
+    |> cast(%{"company_profile" => attrs}, [])
+    |> cast_embed(:company_profile,
+      with: &Lotte.Tenants.CompanyProfileModel.operate_changeset/2
+    )
+  end
+
+  defp ensure_profile(%__MODULE__{company_profile: nil} = tenant) do
+    %{tenant | company_profile: %Lotte.Tenants.CompanyProfileModel{}}
+  end
+
+  defp ensure_profile(tenant), do: tenant
 
   defp put_slug(changeset) do
     case get_change(changeset, :slug) do

@@ -1,0 +1,70 @@
+<Layouts.flash_group flash={@flash} />
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-lg">
+    <p class="text-sm text-secondary-500 mb-2">Step 2 of 3</p>
+    <h1 class="text-3xl font-bold text-secondary-900 mb-2">Tell us about your services</h1>
+    <p class="text-secondary-700 mb-6">
+      Lotte uses this to answer patient questions accurately. You can edit it later.
+    </p>
+
+    <form action={~p"/onboarding/about"} method="post" class="space-y-4">
+      <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+
+      <div>
+        <label class="label" for="company_profile_description">What does your practice do?</label>
+        <textarea
+          id="company_profile_description"
+          name="company_profile[description]"
+          rows="3"
+          placeholder="A short paragraph about your practice"
+          data-testid="onboarding-about-description"
+          class="textarea textarea-bordered w-full"
+        >{@tenant.company_profile && @tenant.company_profile.description}</textarea>
+      </div>
+
+      <div>
+        <label class="label" for="company_profile_services">
+          Services you offer (one per line)
+        </label>
+        <textarea
+          id="company_profile_services"
+          name="company_profile[services]"
+          rows="4"
+          placeholder="Physiotherapy&#10;Sports massage&#10;Posture assessment"
+          data-testid="onboarding-about-services"
+          class="textarea textarea-bordered w-full"
+        >{services_text(@tenant)}</textarea>
+        <p class="text-xs text-secondary-500 mt-1">One service per line.</p>
+      </div>
+
+      <div>
+        <label class="label" for="company_profile_website_url">Website (optional)</label>
+        <input
+          type="url"
+          id="company_profile_website_url"
+          name="company_profile[website_url]"
+          value={@tenant.company_profile && @tenant.company_profile.website_url}
+          placeholder="https://yourpractice.example.com"
+          data-testid="onboarding-about-website"
+          class="input input-bordered w-full"
+        />
+        <%= for msg <- @errors[:website_url] || [] do %>
+          <p class="text-sm text-error mt-1">{msg}</p>
+        <% end %>
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <.link
+          href={~p"/dashboard"}
+          class="link link-secondary text-sm"
+          data-testid="onboarding-skip"
+        >
+          Skip for now
+        </.link>
+        <button type="submit" data-testid="onboarding-about-submit" class="btn btn-primary">
+          Continue
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

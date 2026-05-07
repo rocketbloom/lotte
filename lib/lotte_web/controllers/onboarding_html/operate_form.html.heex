@@ -1,0 +1,67 @@
+<Layouts.flash_group flash={@flash} />
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-lg">
+    <p class="text-sm text-secondary-500 mb-2">Step 3 of 3</p>
+    <h1 class="text-3xl font-bold text-secondary-900 mb-2">How you operate</h1>
+    <p class="text-secondary-700 mb-6">
+      Hours, location, and the tone Lotte should use with patients.
+    </p>
+
+    <form action={~p"/onboarding/operate"} method="post" class="space-y-4">
+      <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+
+      <div>
+        <label class="label" for="company_profile_opening_hours">Opening hours</label>
+        <textarea
+          id="company_profile_opening_hours"
+          name="company_profile[opening_hours]"
+          rows="3"
+          placeholder="Mon-Fri 09:00-17:00, Sat 10:00-14:00, closed Sun"
+          data-testid="onboarding-operate-hours"
+          class="textarea textarea-bordered w-full"
+        >{@tenant.company_profile && @tenant.company_profile.opening_hours}</textarea>
+      </div>
+
+      <div>
+        <label class="label" for="company_profile_address">Address</label>
+        <textarea
+          id="company_profile_address"
+          name="company_profile[address]"
+          rows="2"
+          placeholder="Hoofdstraat 1, 1234 AB Amsterdam"
+          data-testid="onboarding-operate-address"
+          class="textarea textarea-bordered w-full"
+        >{@tenant.company_profile && @tenant.company_profile.address}</textarea>
+      </div>
+
+      <div>
+        <label class="label" for="company_profile_tone">Tone of voice</label>
+        <textarea
+          id="company_profile_tone"
+          name="company_profile[tone]"
+          rows="3"
+          placeholder="Warm, professional, plain Dutch — never pushy"
+          data-testid="onboarding-operate-tone"
+          class="textarea textarea-bordered w-full"
+        >{@tenant.company_profile && @tenant.company_profile.tone}</textarea>
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <.link
+          href={~p"/dashboard"}
+          class="link link-secondary text-sm"
+          data-testid="onboarding-skip"
+        >
+          Skip for now
+        </.link>
+        <button
+          type="submit"
+          data-testid="onboarding-operate-submit"
+          class="btn btn-primary"
+        >
+          Finish
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

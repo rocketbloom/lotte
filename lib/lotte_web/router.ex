@@ -40,6 +40,10 @@ defmodule LotteWeb.Router do
 
     get "/onboarding/company", OnboardingController, :company_form
     post "/onboarding/company", OnboardingController, :company_submit
+    get "/onboarding/about", OnboardingController, :about_form
+    post "/onboarding/about", OnboardingController, :about_submit
+    get "/onboarding/operate", OnboardingController, :operate_form
+    post "/onboarding/operate", OnboardingController, :operate_submit
 
     get "/dashboard", DashboardController, :index
   end
