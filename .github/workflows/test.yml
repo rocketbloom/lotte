@@ -46,7 +46,24 @@ jobs:
         id: setup-chrome
         with:
           chrome-version: stable
-          install-chromedriver: true
+
+      - name: Install matching ChromeDriver
+        run: |
+          CHROME_VERSION="${{ steps.setup-chrome.outputs.chrome-version }}"
+          echo "Chrome version: $CHROME_VERSION"
+          DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json \
+            | jq -r --arg v "$CHROME_VERSION" '.versions[] | select(.version == $v) | .downloads.chromedriver[] | select(.platform == "linux64") | .url')
+          if [ -z "$DRIVER_URL" ]; then
+            echo "No exact match for $CHROME_VERSION; falling back to latest patch in same major.minor.build"
+            BASE=$(echo "$CHROME_VERSION" | awk -F. '{print $1"."$2"."$3}')
+            DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json \
+              | jq -r --arg b "$BASE" '[.versions[] | select(.version | startswith($b))] | last | .downloads.chromedriver[] | select(.platform == "linux64") | .url')
+          fi
+          echo "ChromeDriver URL: $DRIVER_URL"
+          curl -sSL "$DRIVER_URL" -o /tmp/chromedriver.zip
+          unzip -o /tmp/chromedriver.zip -d /tmp/chromedriver
+          sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          chromedriver --version
 
       - run: mix deps.get
       - run: mix compile --warnings-as-errors
