@@ -14,7 +14,7 @@ alias Lotte.Repo
 alias Lotte.Tenants
 
 # Clean up existing test tenants
-Repo.query!("DELETE FROM tenants WHERE slug IN ('demo', 'test-practice')")
+Repo.query!("DELETE FROM tenant WHERE slug IN ('demo', 'test-practice')")
 
 # Create demo tenant
 Tenants.create_tenant!(%{

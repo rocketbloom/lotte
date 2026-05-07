@@ -1,11 +1,11 @@
-defmodule Lotte.Conversations.ApiLog do
+defmodule Lotte.Conversations.ApiLogModel do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  schema "api_logs" do
+  schema "api_log" do
     field :tenant_id, :binary_id
     field :api_provider, :string, default: "claude"
     field :model, :string
@@ -15,7 +15,7 @@ defmodule Lotte.Conversations.ApiLog do
     field :status, :string
     field :error_message, :string
 
-    belongs_to :conversation, Lotte.Conversations.Conversation, type: :binary_id
+    belongs_to :conversation, Lotte.Conversations.ConversationModel, type: :binary_id
 
     timestamps()
   end

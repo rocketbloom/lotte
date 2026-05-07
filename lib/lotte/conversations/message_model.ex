@@ -1,16 +1,16 @@
-defmodule Lotte.Conversations.Message do
+defmodule Lotte.Conversations.MessageModel do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  schema "messages" do
+  schema "message" do
     field :role, :string
     field :content, :string
     field :tokens_used, :integer
 
-    belongs_to :conversation, Lotte.Conversations.Conversation
+    belongs_to :conversation, Lotte.Conversations.ConversationModel
 
     timestamps()
   end
