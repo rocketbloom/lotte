@@ -47,8 +47,11 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Export CHROME_BIN
-        run: echo "CHROME_BIN=${{ steps.setup-chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
+      - name: Replace system Chrome with installed version
+        run: |
+          sudo ln -sf "${{ steps.setup-chrome.outputs.chrome-path }}" /usr/bin/google-chrome
+          sudo ln -sf "${{ steps.setup-chrome.outputs.chrome-path }}" /usr/bin/chromium
+          google-chrome --version
 
       - name: Install matching ChromeDriver
         run: |
