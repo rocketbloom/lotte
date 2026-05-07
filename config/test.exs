@@ -13,12 +13,22 @@ config :lotte, Lotte.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 
-# We don't run a server during test. If one is required,
-# you can enable the server option below.
+# Wallaby browser-driven feature tests need a real server
 config :lotte, LotteWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "ExP7oi19a+YLY1B9V/qX/rJAae0L2z2C3CFC7wKIAjvDgqUreS70o9rSz7+Nc112",
-  server: false
+  server: true
+
+config :wallaby,
+  otp_app: :lotte,
+  base_url: "http://localhost:4002",
+  driver: Wallaby.Chrome,
+  screenshot_dir: "tmp/wallaby_screenshots",
+  screenshot_on_failure: true,
+  max_wait_time: String.to_integer(System.get_env("WALLABY_MAX_WAIT_TIME", "5000")),
+  chromedriver: [
+    headless: System.get_env("WALLABY_HEADLESS", "true") == "true"
+  ]
 
 # In test we don't send emails
 config :lotte, Lotte.Mailer, adapter: Swoosh.Adapters.Test

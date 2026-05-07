@@ -42,6 +42,12 @@ jobs:
           restore-keys: |
             mix-${{ runner.os }}-otp${{ steps.setup-beam.outputs.otp-version }}-elixir${{ steps.setup-beam.outputs.elixir-version }}-
 
+      - uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+        with:
+          chrome-version: stable
+          install-chromedriver: true
+
       - run: mix deps.get
       - run: mix compile --warnings-as-errors
       - run: mix format --check-formatted

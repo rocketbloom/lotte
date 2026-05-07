@@ -20,9 +20,10 @@ if System.get_env("PHX_SERVER") do
   config :lotte, LotteWeb.Endpoint, server: true
 end
 
-config :lotte, LotteWeb.Endpoint, http: [port: String.to_integer(System.get_env("PORT", "4000"))]
-
 if config_env() == :prod do
+  config :lotte, LotteWeb.Endpoint,
+    http: [port: String.to_integer(System.get_env("PORT", "4000"))]
+
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
