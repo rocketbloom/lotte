@@ -22,7 +22,17 @@ defmodule Lotte.Conversations.ApiLogModel do
 
   def changeset(api_log, attrs) do
     api_log
-    |> cast(attrs, [:tenant_id, :conversation_id, :api_provider, :model, :input_tokens, :output_tokens, :total_tokens, :status, :error_message])
+    |> cast(attrs, [
+      :tenant_id,
+      :conversation_id,
+      :api_provider,
+      :model,
+      :input_tokens,
+      :output_tokens,
+      :total_tokens,
+      :status,
+      :error_message
+    ])
     |> validate_required([:tenant_id, :model, :input_tokens, :output_tokens, :status])
     |> validate_inclusion(:status, ["success", "error", "rate_limited"])
   end

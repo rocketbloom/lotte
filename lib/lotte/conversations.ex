@@ -15,13 +15,19 @@ defmodule Lotte.Conversations do
   end
 
   def get_or_create_conversation(tenant_id, external_user_id) do
-    case Repo.one(from c in ConversationModel, where: c.tenant_id == ^tenant_id and c.external_user_id == ^external_user_id and c.status == "active") do
+    case Repo.one(
+           from c in ConversationModel,
+             where:
+               c.tenant_id == ^tenant_id and c.external_user_id == ^external_user_id and
+                 c.status == "active"
+         ) do
       nil ->
         create_conversation(%{
           tenant_id: tenant_id,
           external_user_id: external_user_id,
           status: "active"
         })
+
       conversation ->
         {:ok, conversation}
     end
@@ -61,6 +67,7 @@ defmodule Lotte.Conversations do
 
   def get_api_usage(tenant_id, days \\ 30) do
     cutoff = NaiveDateTime.add(NaiveDateTime.utc_now(), -days * 86400)
+
     from(a in ApiLogModel,
       where: a.tenant_id == ^tenant_id and a.inserted_at >= ^cutoff and a.status == "success",
       select: %{
@@ -74,6 +81,7 @@ defmodule Lotte.Conversations do
 
   def update_conversation_status(conversation_id, status) do
     conversation = Repo.get!(ConversationModel, conversation_id)
+
     ConversationModel.changeset(conversation, %{status: status})
     |> Repo.update()
   end

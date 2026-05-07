@@ -20,7 +20,9 @@ defmodule Lotte.AI.ClaudeClient do
 
   defp get_conversation(conversation_id, tenant_id) do
     case Conversations.get_conversation(conversation_id) do
-      nil -> {:error, :conversation_not_found}
+      nil ->
+        {:error, :conversation_not_found}
+
       conversation ->
         if conversation.tenant_id == tenant_id do
           {:ok, conversation}
@@ -33,12 +35,14 @@ defmodule Lotte.AI.ClaudeClient do
   defp get_conversation_history(conversation_id) do
     case Conversations.list_messages(conversation_id) do
       messages ->
-        history = Enum.map(messages, fn msg ->
-          %{
-            "role" => msg.role,
-            "content" => msg.content
-          }
-        end)
+        history =
+          Enum.map(messages, fn msg ->
+            %{
+              "role" => msg.role,
+              "content" => msg.content
+            }
+          end)
+
         {:ok, history}
     end
   end
@@ -59,6 +63,7 @@ defmodule Lotte.AI.ClaudeClient do
       {:ok, response} ->
         log_api_call(tenant_id, conversation_id, response, :success)
         extract_response(response)
+
       {:error, reason} ->
         Logger.error("Claude API error: #{inspect(reason)}")
         log_api_call(tenant_id, conversation_id, nil, :error, reason)
@@ -66,13 +71,16 @@ defmodule Lotte.AI.ClaudeClient do
     end
   end
 
-  defp extract_response(%{"content" => [%{"type" => "text", "text" => text} | _]}), do: {:ok, text}
+  defp extract_response(%{"content" => [%{"type" => "text", "text" => text} | _]}),
+    do: {:ok, text}
+
   defp extract_response(%{"content" => content}) when is_list(content) and length(content) > 0 do
     case List.first(content) do
       %{"type" => "text", "text" => text} -> {:ok, text}
       _ -> {:error, "Unexpected response format from Claude API"}
     end
   end
+
   defp extract_response(_), do: {:error, "Invalid response format from Claude API"}
 
   defp get_system_prompt do
@@ -89,16 +97,18 @@ defmodule Lotte.AI.ClaudeClient do
   end
 
   defp save_messages(conversation_id, user_message, assistant_response) do
-    with {:ok, _} <- Conversations.create_message(%{
-      conversation_id: conversation_id,
-      role: "user",
-      content: user_message
-    }),
-    {:ok, _} <- Conversations.create_message(%{
-      conversation_id: conversation_id,
-      role: "assistant",
-      content: assistant_response
-    }) do
+    with {:ok, _} <-
+           Conversations.create_message(%{
+             conversation_id: conversation_id,
+             role: "user",
+             content: user_message
+           }),
+         {:ok, _} <-
+           Conversations.create_message(%{
+             conversation_id: conversation_id,
+             role: "assistant",
+             content: assistant_response
+           }) do
       {:ok, :messages_saved}
     else
       {:error, reason} ->
@@ -131,8 +141,11 @@ defmodule Lotte.AI.ClaudeClient do
   defp get_output_tokens(%{"usage" => %{"output_tokens" => tokens}}), do: tokens
   defp get_output_tokens(_), do: 0
 
-  defp get_total_tokens(%{"usage" => %{"input_tokens" => in_tokens, "output_tokens" => out_tokens}}) do
+  defp get_total_tokens(%{
+         "usage" => %{"input_tokens" => in_tokens, "output_tokens" => out_tokens}
+       }) do
     in_tokens + out_tokens
   end
+
   defp get_total_tokens(_), do: 0
 end

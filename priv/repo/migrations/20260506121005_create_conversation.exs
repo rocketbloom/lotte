@@ -16,7 +16,10 @@ defmodule Lotte.Repo.Migrations.CreateConversation do
 
     create table(:message, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :conversation_id, references(:conversation, type: :binary_id, on_delete: :delete_all), null: false
+
+      add :conversation_id, references(:conversation, type: :binary_id, on_delete: :delete_all),
+        null: false
+
       add :role, :string, null: false
       add :content, :text, null: false
       add :tokens_used, :integer
