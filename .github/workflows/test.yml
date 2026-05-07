@@ -42,33 +42,9 @@ jobs:
           restore-keys: |
             mix-${{ runner.os }}-otp${{ steps.setup-beam.outputs.otp-version }}-elixir${{ steps.setup-beam.outputs.elixir-version }}-
 
-      - uses: browser-actions/setup-chrome@v1
-        id: setup-chrome
-        with:
-          chrome-version: stable
-
-      - name: Replace system Chrome with installed version
+      - name: Verify Chrome + ChromeDriver (preinstalled on runner)
         run: |
-          sudo ln -sf "${{ steps.setup-chrome.outputs.chrome-path }}" /usr/bin/google-chrome
-          sudo ln -sf "${{ steps.setup-chrome.outputs.chrome-path }}" /usr/bin/chromium
           google-chrome --version
-
-      - name: Install matching ChromeDriver
-        run: |
-          CHROME_VERSION="${{ steps.setup-chrome.outputs.chrome-version }}"
-          echo "Chrome version: $CHROME_VERSION"
-          DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json \
-            | jq -r --arg v "$CHROME_VERSION" '.versions[] | select(.version == $v) | .downloads.chromedriver[] | select(.platform == "linux64") | .url')
-          if [ -z "$DRIVER_URL" ]; then
-            echo "No exact match for $CHROME_VERSION; falling back to latest patch in same major.minor.build"
-            BASE=$(echo "$CHROME_VERSION" | awk -F. '{print $1"."$2"."$3}')
-            DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json \
-              | jq -r --arg b "$BASE" '[.versions[] | select(.version | startswith($b))] | last | .downloads.chromedriver[] | select(.platform == "linux64") | .url')
-          fi
-          echo "ChromeDriver URL: $DRIVER_URL"
-          curl -sSL "$DRIVER_URL" -o /tmp/chromedriver.zip
-          unzip -o /tmp/chromedriver.zip -d /tmp/chromedriver
-          sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
           chromedriver --version
 
       - run: mix deps.get
