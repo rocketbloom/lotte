@@ -17,6 +17,10 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * Forum: https://elixirforum.com/c/phoenix-forum
 * Source: https://github.com/phoenixframework/phoenix
 
+## Tests
+
+Run `mix test` to run the suite locally. CI runs the same suite on every push to `trunk` and on pull requests against `trunk`.
+
 ## Deployment
 
 - **Trunk deployments**: Every push to `trunk` automatically deploys to https://lotte-test.fly.dev
