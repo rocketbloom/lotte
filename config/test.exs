@@ -30,6 +30,10 @@ config :wallaby,
     headless: System.get_env("WALLABY_HEADLESS", "true") == "true"
   ]
 
+if chrome_bin = System.get_env("CHROME_BIN") do
+  config :wallaby, Wallaby.Chrome, binary: chrome_bin
+end
+
 # In test we don't send emails
 config :lotte, Lotte.Mailer, adapter: Swoosh.Adapters.Test
 

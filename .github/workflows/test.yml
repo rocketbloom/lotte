@@ -47,6 +47,9 @@ jobs:
         with:
           chrome-version: stable
 
+      - name: Export CHROME_BIN
+        run: echo "CHROME_BIN=${{ steps.setup-chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
+
       - name: Install matching ChromeDriver
         run: |
           CHROME_VERSION="${{ steps.setup-chrome.outputs.chrome-version }}"
