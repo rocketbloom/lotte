@@ -67,6 +67,29 @@ defmodule LotteWeb.AuthController do
     |> redirect(to: ~p"/")
   end
 
+  def resend_activation(conn, _params) do
+    user = conn.assigns.current_user
+
+    conn
+    |> resend_for_user(user)
+    |> redirect(to: ~p"/dashboard")
+  end
+
+  defp resend_for_user(conn, %{confirmed_at: nil} = user) do
+    case Users.reissue_activation_token(user) do
+      {:ok, token} ->
+        send_activation_email(conn, user, token)
+        put_flash(conn, :info, "We've sent a new activation link to #{user.email}.")
+
+      {:error, _} ->
+        put_flash(conn, :error, "Couldn't send the activation link. Please try again.")
+    end
+  end
+
+  defp resend_for_user(conn, _user) do
+    put_flash(conn, :info, "Your account is already activated.")
+  end
+
   defp send_activation_email(conn, user, token) do
     url_for_token = fn t -> url(conn, ~p"/activate/#{t}") end
     Users.deliver_activation_email(user, token, url_for_token)

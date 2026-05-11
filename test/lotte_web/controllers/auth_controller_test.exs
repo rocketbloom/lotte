@@ -122,6 +122,56 @@ defmodule LotteWeb.AuthControllerTest do
     end
   end
 
+  describe "POST /resend-activation" do
+    test "issues a fresh token and invalidates the old one for unactivated user", %{conn: conn} do
+      {:ok, %{user: user, token: old_token}} = Users.register_with_email("resend@example.com")
+
+      conn =
+        conn
+        |> Plug.Test.init_test_session(%{"user_id" => user.id})
+        |> post(~p"/resend-activation")
+
+      assert redirected_to(conn) == ~p"/dashboard"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "new activation link"
+
+      attrs = %{
+        "password" => "supersecret",
+        "password_confirmation" => "supersecret",
+        "accept_terms" => "true",
+        "accept_privacy" => "true"
+      }
+
+      assert {:error, :invalid_token} = Users.activate(old_token, attrs)
+    end
+
+    test "no-ops with friendly flash for already-activated user", %{conn: conn} do
+      {:ok, %{user: user, token: token}} = Users.register_with_email("done@example.com")
+
+      {:ok, _} =
+        Users.activate(token, %{
+          "password" => "supersecret",
+          "password_confirmation" => "supersecret",
+          "accept_terms" => "true",
+          "accept_privacy" => "true"
+        })
+
+      activated = Users.get_user!(user.id)
+
+      conn =
+        conn
+        |> Plug.Test.init_test_session(%{"user_id" => activated.id})
+        |> post(~p"/resend-activation")
+
+      assert redirected_to(conn) == ~p"/dashboard"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "already activated"
+    end
+
+    test "redirects to /login when not signed in", %{conn: conn} do
+      conn = post(conn, ~p"/resend-activation")
+      assert redirected_to(conn) == ~p"/login"
+    end
+  end
+
   describe "GET /dashboard" do
     test "redirects to /login when not signed in", %{conn: conn} do
       conn = get(conn, ~p"/dashboard")

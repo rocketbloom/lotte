@@ -38,6 +38,8 @@ defmodule LotteWeb.Router do
   scope "/", LotteWeb do
     pipe_through [:browser, :require_user]
 
+    post "/resend-activation", AuthController, :resend_activation
+
     get "/onboarding/company", OnboardingController, :company_form
     post "/onboarding/company", OnboardingController, :company_submit
     get "/onboarding/about", OnboardingController, :about_form

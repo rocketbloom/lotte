@@ -11,6 +11,16 @@
       <p class="text-warning" data-testid="dashboard-status">
         Activation email sent. Check your inbox to finish setting your password.
       </p>
+      <form action={~p"/resend-activation"} method="post" class="mt-3">
+        <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+        <button
+          type="submit"
+          class="btn btn-sm btn-outline"
+          data-testid="resend-activation"
+        >
+          Send a new activation link
+        </button>
+      </form>
     <% end %>
 
     <p class="mt-6">
