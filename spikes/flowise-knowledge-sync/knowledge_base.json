@@ -1,0 +1,109 @@
+{
+  "tenant": {
+    "id": "rocketbloom",
+    "name": "RocketBloom",
+    "website": "rocketbloom.io",
+    "company_description": "RocketBloom helpt bedrijven slimmer werken door automatisering en AI-oplossingen op maat.",
+    "default_language": "en",
+    "calendar_url": "https://calendar.app.google/SmsWdhxvdGRWEHNy9",
+    "retention_disclosure": "Conversaties worden maximaal 1 maand bewaard ter verbetering van de dienstverlening — niet voor training van het onderliggende AI-model."
+  },
+  "knowledge_entries": [
+    {
+      "id": 1,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "1,5 uur meekijken + verbeterplan",
+      "price_range": "€150 ex btw",
+      "content": "Vrijblijvend traject met Iris (of een ander teamlid van RocketBloom). Iris kijkt 1,5 uur mee met de werkzaamheden en levert daarna een verbeterplan op. Klant beslist zelf wat ze ermee doen — geen verplichtingen. De €150 wordt in mindering gebracht op een eventuele vervolgofferte voor het bouwen van een automatisering."
+    },
+    {
+      "id": 2,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Automatisering van repetitief werk",
+      "price_range": "€750–€5.000",
+      "content": "Per project. Voorbeelden: e-mailverwerking, factuurverwerking, dataentry automatiseren."
+    },
+    {
+      "id": 3,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Software-integratie",
+      "price_range": "€500–€7.500",
+      "content": "Systemen aan elkaar koppelen die niet uit de doos communiceren."
+    },
+    {
+      "id": 4,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "CRM-implementatie",
+      "price_range": "€1.500–€7.500",
+      "content": "Setup van HubSpot, Pipedrive, of een aangepaste oplossing (Airtable, Notion-based)."
+    },
+    {
+      "id": 5,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Logistieke automatisering",
+      "price_range": "€2.000–€10.000",
+      "content": "Handmatige logistieke processen omzetten naar geautomatiseerde flows."
+    },
+    {
+      "id": 6,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Projectmanagement-setup",
+      "price_range": "€750–€5.000",
+      "content": "Opzetten van Basecamp, ClickUp of vergelijkbare tools, inclusief training."
+    },
+    {
+      "id": 7,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Inbox-management",
+      "price_range": "€500–€1.500 setup, €250–€750/maand doorlopend",
+      "content": "E-mailchaos organiseren met labels, filters, templates. Doorlopend retainer mogelijk."
+    },
+    {
+      "id": 8,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Website-onderhoud",
+      "price_range": "€100–€600/maand",
+      "content": "Beheer en updates van WordPress en Webflow sites."
+    },
+    {
+      "id": 9,
+      "tenant_id": "rocketbloom",
+      "category": "service",
+      "title": "Uurtarief",
+      "price_range": "€85–€110",
+      "content": "Voor losse uren. Strippenkaart: 10 uur voor €850."
+    },
+    {
+      "id": 10,
+      "tenant_id": "rocketbloom",
+      "category": "about_lotte",
+      "title": "Wat is Lotte",
+      "price_range": "Nog niet bekend, 1 maand gratis testen bij lancering",
+      "content": "AI-chatagent voor websites van bedrijven. 24/7 beschikbaar. Het bedrijf traint Lotte zelf op hun specifieke vragen. Dashboard met overzicht van alle gesprekken + analyse om Lotte beter te maken. Maakt terugbelverzoeken aan wanneer Lotte een vraag niet kan beantwoorden — gericht naar de juiste persoon binnen het bedrijf (database koppelt onderwerp aan contactpersoon)."
+    },
+    {
+      "id": 11,
+      "tenant_id": "rocketbloom",
+      "category": "team_member",
+      "title": "Iris van der Veen",
+      "role": "Oprichter & automatiseringsexpert",
+      "content": "Iris is de oprichter van RocketBloom. Specialist in Make.com, software-integraties en het in kaart brengen van werkprocessen. Aanspreekpunt voor kennismakingsgesprekken en offertes."
+    },
+    {
+      "id": 12,
+      "tenant_id": "rocketbloom",
+      "category": "team_member",
+      "title": "Melle Lieuwes",
+      "role": "Developer & technisch lead",
+      "content": "Melle bouwt de technische kant: software-integraties op maat, custom applicaties en de Lotte-chatagent. Aanspreekpunt voor technisch complexere vragen."
+    }
+  ]
+}
