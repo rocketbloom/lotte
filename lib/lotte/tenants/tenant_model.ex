@@ -14,8 +14,6 @@ defmodule Lotte.Tenants.TenantModel do
     embeds_one :company_profile, Lotte.Tenants.CompanyProfileModel, on_replace: :update
 
     has_many :users, Lotte.Users.UserModel, foreign_key: :tenant_id
-    has_many :conversations, Lotte.Conversations.ConversationModel, foreign_key: :tenant_id
-    has_many :api_logs, Lotte.Conversations.ApiLogModel, foreign_key: :tenant_id
 
     timestamps()
   end
