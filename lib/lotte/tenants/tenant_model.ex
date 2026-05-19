@@ -11,6 +11,9 @@ defmodule Lotte.Tenants.TenantModel do
     field :slug, :string
     field :status, :string, default: "active"
     field :settings, :map, default: %{}
+    field :flowise_chatflow_id, :string
+    field :calendar_url, :string
+    field :default_language, :string
     embeds_one :company_profile, Lotte.Tenants.CompanyProfileModel, on_replace: :update
 
     has_many :users, Lotte.Users.UserModel, foreign_key: :tenant_id
@@ -20,7 +23,15 @@ defmodule Lotte.Tenants.TenantModel do
 
   def changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:name, :slug, :status, :settings])
+    |> cast(attrs, [
+      :name,
+      :slug,
+      :status,
+      :settings,
+      :flowise_chatflow_id,
+      :calendar_url,
+      :default_language
+    ])
     |> validate_required([:name])
     |> validate_length(:name, min: 1, max: @max_name_length)
     |> put_slug()
